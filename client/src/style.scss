@@ -1,4 +1,5 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+// @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
 
 $lightGreen: #b9e7e7;
 
@@ -14,9 +15,23 @@ body {
 }
 
 .app {
-  .container {
-    //Login & Register
+  display: flex;
+  justify-content: center;
 
+  .container {
+    border: 1px solid red;
+    width: 1024px;
+
+    .link {
+      text-decoration: none;
+      color: inherit;
+      h6 {
+        margin: 0;
+        font-weight: 300;
+        font-size: 12px;
+      }
+    }
+    //Login & Register
     .auth {
       display: flex;
       flex-direction: column;
@@ -63,6 +78,61 @@ body {
           font-size: 12px;
           text-align: center;
         }
+      }
+    }
+
+    //Navbar
+    .navbar {
+      .container {
+        display: flex;
+        padding: 10px 0;
+        justify-content: space-between;
+        align-items: center;
+        .logo {
+          img {
+            width: 120px;
+          }
+        }
+        .links {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          span {
+            cursor: pointer;
+          }
+
+          .write {
+            background-color: $lightGreen;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 300;
+            border: 1px solid white;
+
+            &:hover {
+              color: teal;
+              background-color: white;
+              border: 1px solid teal;
+            }
+          }
+        }
+      }
+    }
+
+    //Footer
+    footer {
+      margin-top: 100px;
+      padding: 20px;
+      background-color: $lightGreen;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      img {
+        height: 50px;
       }
     }
   }
