@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
   const posts = [
     {
       id: 1,
@@ -28,12 +29,16 @@ const Home = () => {
       img: 'https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     },
   ];
+
+  const goToPost = (post) => {
+    navigate(`/post/${post.id}`);
+  };
   return (
     <div className="home">
       <div className="posts">
         {posts.map((post) => (
           <div key={post.id} className="post">
-            <div className="img">
+            <div onClick={() => goToPost(post)} className="img">
               <img src={post.img} alt="img" />
             </div>
             <div className="content">
@@ -41,7 +46,7 @@ const Home = () => {
                 <h1>{post.title}</h1>
               </Link>
               <p>{post.desc}</p>
-              <button>Read More</button>
+              <button onClick={() => goToPost(post)}>Read More</button>
             </div>
           </div>
         ))}
