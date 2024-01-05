@@ -1,3 +1,4 @@
 export const addPost = (req, res) => {
-    res.json("from controller")
+    console.log('get')
+    res.json({ test: "from controller" })
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 const Menu = () => {
   const posts = [
@@ -27,6 +28,14 @@ const Menu = () => {
       img: 'https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     },
   ];
+
+  const clickTest = async () => {
+    await axios
+      // .get('https://dummyjson.com/todos')
+      .get('http://localhost:8800/api/test')
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
+  };
   return (
     <div className="menu">
       <h1>Other posts you may like</h1>
@@ -34,7 +43,7 @@ const Menu = () => {
         <div className="post" key={post.id}>
           <img src={post.img} alt="img" />
           <h2>{post.title}</h2>
-          <button>Read More</button>
+          <button onClick={() => clickTest()}>Read More</button>
         </div>
       ))}
     </div>

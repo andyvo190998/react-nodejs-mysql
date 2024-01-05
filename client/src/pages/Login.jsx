@@ -1,17 +1,57 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [inputs, setInputs] = useState({
+    username: '',
+    password: '',
+  });
+  const [errorState, setErrorState] = useState('');
+
+  const handleOnChange = (e) => {
+    setInputs((previous) => ({ ...previous, [e.target.name]: e.target.value }));
+  };
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    console.log(inputs);
+    try {
+      const { data } = await axios.post(
+        'http://localhost:8800/api/auth/login',
+        inputs,
+        { withCredentials: true }
+      );
+      console.log(data);
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+      setErrorState(error.response.data);
+    }
+  };
   return (
     <div className="auth">
       <h1>Login</h1>
       <form>
-        <input required type="text" placeholder="username" />
-        <input required type="password" placeholder="password" />
-        <button required type="submit">
+        <input
+          onChange={handleOnChange}
+          name="username"
+          required
+          type="text"
+          placeholder="username"
+        />
+        <input
+          onChange={handleOnChange}
+          name="password"
+          required
+          type="password"
+          placeholder="password"
+        />
+        <button onClick={handleOnSubmit} required type="submit">
           Login
         </button>
-        <p>This is an error!</p>
+        <p>{errorState}</p>
         <span>
           Don't you have an account? <Link to="/register">Register</Link>
         </span>
