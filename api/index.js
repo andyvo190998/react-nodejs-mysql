@@ -9,8 +9,8 @@ import cookieParser from 'cookie-parser'
 const ENV = dotenv.config().parsed
 const PORT = ENV.PORT === undefined ? 3000 : ENV.PORT
 const corsOptions = {
-    origin: true, //included origin as true
-    credentials: true, //included credentials as true
+    origin: true,
+    credentials: true,
 };
 
 const app = express()
@@ -25,10 +25,6 @@ app.use("/api/users", userRoutes)
 app.get("/", (req, res) => {
     return res.status(200).json("Hello world!")
 })
-
-// let dotenv = require('dotenv').config()
-
-
 
 app.listen(PORT, () => {
     console.log(`Express is listening on PORT: ${PORT}!`)

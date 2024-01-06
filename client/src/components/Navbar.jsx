@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Logo from '../img/logo.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/authContext';
 
 const Navbar = () => {
+  const { currentUser, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const handleLog = async () => {
+    if (currentUser) {
+      console.log('logout');
+      await logout();
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
     <div className="navbar">
       <div className="container">
@@ -28,13 +40,15 @@ const Navbar = () => {
           <Link to="/?cat=art" className="link">
             <h6>FOOD</h6>
           </Link>
-          <span>Andy</span>
-          <span>Logout</span>
-          <span className="write">
-            <Link className="link" to="/write">
-              Write
-            </Link>
-          </span>
+          <span>{currentUser && currentUser.username}</span>
+          <span onClick={handleLog}>{currentUser ? 'Logout' : 'Login'}</span>
+          {currentUser && (
+            <span className="write">
+              <Link className="link" to="/write">
+                Write
+              </Link>
+            </span>
+          )}
         </div>
       </div>
     </div>
