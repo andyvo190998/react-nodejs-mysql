@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Menu = () => {
+  const navigate = useNavigate();
   const posts = [
     {
       id: 1,
@@ -29,21 +31,25 @@ const Menu = () => {
     },
   ];
 
-  const clickTest = async () => {
-    await axios
-      // .get('https://dummyjson.com/todos')
-      .get('http://localhost:8800/api/test')
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
+  const handleNavigate = (id) => {
+    navigate(`/post/${id}`);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
   return (
     <div className="menu">
       <h1>Other posts you may like</h1>
       {posts.map((post) => (
-        <div className="post" key={post.id}>
+        <div
+          onClick={() => handleNavigate(post.id)}
+          className="post"
+          key={post.id}
+        >
           <img src={post.img} alt="img" />
           <h2>{post.title}</h2>
-          <button onClick={() => clickTest()}>Read More</button>
+          <button onClick={() => handleNavigate(post.id)}>Read More</button>
         </div>
       ))}
     </div>

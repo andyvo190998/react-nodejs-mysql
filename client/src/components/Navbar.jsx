@@ -6,6 +6,7 @@ import { AuthContext } from '../context/authContext';
 const Navbar = () => {
   const { currentUser, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
   const handleLog = async () => {
     if (currentUser) {
       console.log('logout');
@@ -25,19 +26,19 @@ const Navbar = () => {
           <Link to="/?cat=art" className="link">
             <h6>ART</h6>
           </Link>
-          <Link to="/?cat=art" className="link">
+          <Link to="/?cat=science" className="link">
             <h6>SCIENCE</h6>
           </Link>
-          <Link to="/?cat=art" className="link">
+          <Link to="/?cat=technology" className="link">
             <h6>TECHNOLOGY</h6>
           </Link>
-          <Link to="/?cat=art" className="link">
+          <Link to="/?cat=cinema" className="link">
             <h6>CINEMA</h6>
           </Link>
-          <Link to="/?cat=art" className="link">
+          <Link to="/?cat=design" className="link">
             <h6>DESIGN</h6>
           </Link>
-          <Link to="/?cat=art" className="link">
+          <Link to="/?cat=food" className="link">
             <h6>FOOD</h6>
           </Link>
           <span>{currentUser && currentUser.username}</span>

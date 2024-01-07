@@ -4,9 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 
 const Login = () => {
-  const { currentUser, login } = useContext(AuthContext);
-  console.log(currentUser);
   const navigate = useNavigate();
+  const { currentUser, login } = useContext(AuthContext);
+
   const [inputs, setInputs] = useState({
     username: '',
     password: '',
