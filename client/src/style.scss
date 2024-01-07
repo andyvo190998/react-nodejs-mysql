@@ -98,6 +98,8 @@ body {
           }
         }
         .links {
+          cursor: pointer;
+
           display: flex;
           align-items: center;
           gap: 10px;
@@ -366,6 +368,7 @@ body {
           .file {
             text-decoration: underline;
             cursor: pointer;
+            color: crimson;
           }
 
           .buttons {
