@@ -9,7 +9,6 @@ const Navbar = () => {
 
   const handleLog = async () => {
     if (currentUser) {
-      console.log('logout');
       await logout();
     } else {
       navigate('/login');

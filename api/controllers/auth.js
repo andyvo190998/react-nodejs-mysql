@@ -55,7 +55,6 @@ export const login = (req, res) => {
 
 
 export const logout = (req, res) => {
-    console.log(req.body.test)
     res.clearCookie('access_token', {
         samSite: 'none',
         secure: true

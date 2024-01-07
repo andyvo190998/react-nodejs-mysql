@@ -7,7 +7,6 @@ export const addPost = (req, res) => {
 
 export const getPosts = (req, res) => {
     const query = req.query.cat ? "SELECT * FROM posts WHERE cat=?" : "SELECT * FROM posts"
-    console.log(req.query)
     db.query(query, [req.query.cat], (err, data) => {
         if (err) return res.json(err)
 
