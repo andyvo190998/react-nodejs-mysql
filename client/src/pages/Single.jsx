@@ -6,6 +6,9 @@ import Menu from '../components/Menu';
 import axios from 'axios';
 import { AuthContext } from '../context/authContext';
 import moment from 'moment';
+import { enqueueSnackbar } from 'notistack';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 const Single = () => {
   const { currentUser } = useContext(AuthContext);
@@ -13,17 +16,32 @@ const Single = () => {
   const [post, setPost] = useState({});
   const [loading, setOnLoading] = useState(null);
   const [errorState, setErrorState] = useState(null);
+  const [deleted, setDeleted] = useState(null);
 
   const postId = location.pathname.split('/')[2];
 
   const handleDeletePost = async () => {
     try {
-      const { data } = await axios.delete(
-        `http://localhost:8800/api/posts/${postId}`
-      );
-      console.log(data);
+      await axios.delete(`http://localhost:8800/api/posts/${postId}`, {
+        withCredentials: true,
+      });
+      enqueueSnackbar('Post deleted', {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'right',
+        },
+      });
+      setDeleted(true);
     } catch (error) {
-      console.error(error);
+      console.log(error.response);
+      enqueueSnackbar('Delete fail, please refresh and do it again!', {
+        variant: 'error',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'right',
+        },
+      });
     }
   };
 
@@ -42,17 +60,33 @@ const Single = () => {
     };
     fetchData();
   }, [location]);
+  console.log(post);
   return (
     <div className="single">
       {loading === null ? (
         <div className="content">Loading...</div>
       ) : (
         <>
-          {Object.keys(post).length === 0 ? (
-            <div className="content">Can not found this post</div>
+          {Object.keys(post).length === 0 || deleted === true ? (
+            <>
+              {deleted && (
+                <Stack sx={{ flex: 5, mt: 5 }}>
+                  <Alert severity="success">Delete post successfully</Alert>
+                </Stack>
+              )}
+              {Object.keys(post).length === 0 && (
+                <Stack sx={{ flex: 5, mt: 5 }}>
+                  <Alert severity="warning">Could not found this post!</Alert>
+                </Stack>
+              )}
+            </>
           ) : (
             <div className="content">
-              <img src={post.img} alt="img" />
+              <img
+                style={{ height: post.img === null && '0px' }}
+                src={post.img}
+                alt="img"
+              />
               <div className="user">
                 <img
                   src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
@@ -64,7 +98,7 @@ const Single = () => {
                 </div>
                 {currentUser !== null && currentUser.id === post.user_id && (
                   <div className="edit">
-                    <Link to={`/write?edit=2`}>
+                    <Link to={`/write?edit=${postId}`}>
                       <img src={Edit} alt="edit" />
                     </Link>
                     <img onClick={handleDeletePost} src={Delete} alt="delete" />

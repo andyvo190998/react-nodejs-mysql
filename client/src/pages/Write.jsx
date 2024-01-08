@@ -4,8 +4,10 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
+import { useSnackbar } from 'notistack';
 
 const Write = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const { currentUser } = useContext(AuthContext);
   const location = useLocation();
   const [value, setValue] = useState('');
@@ -21,15 +23,25 @@ const Write = () => {
         img: null,
         user_id: currentUser.id,
       };
-      const { data } = await axios.post(
-        'http://localhost:8800/api/posts',
-        postContent
-      );
-      console.log(data);
+      await axios.post('http://localhost:8800/api/posts', postContent);
+      enqueueSnackbar('Post success!', {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'right',
+        },
+      });
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar('Post fail, please refresh and do it again!', {
+        variant: 'error',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'right',
+        },
+      });
     }
   };
+
   return (
     <div className="add">
       <div className="content">

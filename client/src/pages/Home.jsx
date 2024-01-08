@@ -36,8 +36,11 @@ const Home = () => {
           {posts.length > 0 ? (
             posts.map((post) => (
               <div key={post.id} className="post">
-                <div onClick={() => goToPost(post)} className="img">
-                  <img src={post.img} alt="img" />
+                <div
+                  onClick={() => goToPost(post)}
+                  className={post.img === null ? 'unknownImg' : 'img'}
+                >
+                  <img src={post.img} alt="Post image error" />
                 </div>
                 <div className="content">
                   <Link className="link" to={`/post/${post.id}`}>

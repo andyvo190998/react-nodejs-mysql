@@ -11,6 +11,8 @@ const PORT = ENV.PORT === undefined ? 3000 : ENV.PORT
 const corsOptions = {
     origin: true,
     credentials: true,
+    // origin: "http://localhost:5173",
+    optionsSuccessStatus: 200,
 };
 
 const app = express()
