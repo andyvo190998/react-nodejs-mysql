@@ -6,10 +6,9 @@ export const addPost = (req, res) => {
     // const insertUserQuery = "INSERT INTO users(`username`, `email`, `password`) VALUES (?)"
     const query = 'INSERT INTO posts(`title`, `description`, `img`, `date`, `user_id`, `cat`) VALUES (?)'
     const values = [title, description, img, new Date(), user_id, cat]
-    console.log(values)
     db.query(query, [values], (err, data) => {
         if (err) return res.status(404).json(err)
-        return res.status(200).json('Post successfully!')
+        return res.status(200).json(data)
     })
 }
 
@@ -38,10 +37,10 @@ export const deletePost = (req, res) => {
     const query = "DELETE FROM posts WHERE id = ?"
     if (!token) return res.status(403).json("Token is not valid")
 
-    jwt.verify(token, 'secret-key', (err, userInfo) => {
+    jwt.verify(token, 'secret-key', (err) => {
         if (err) return res.status(403).json("Token is not valid")
 
-        db.query(query, [postId], (err, data) => {
+        db.query(query, [postId], (err) => {
             if (err) return res.status(404).json(err)
             return res.status(200).json('Delete Success')
         })
@@ -51,6 +50,20 @@ export const deletePost = (req, res) => {
 }
 
 export const updatePost = (req, res) => {
-    console.log('get')
+    const postId = req.params.id
+    const updateContent = req.body
+    const token = req.cookies.access_token
+    const query = 'UPDATE posts SET ? WHERE id = ?'
+
+    if (!token) return res.status(403).json("Token is not valid")
+
+    jwt.verify(token, 'secret-key', (err) => {
+        if (err) return res.status(404).json(err)
+
+        db.query(query, [updateContent, postId], (err) => {
+            if (err) return res.status(404).json(err)
+            return res.status(200).json('Update Success')
+        })
+    })
     res.json({ test: "from controller" })
 }

@@ -54,13 +54,14 @@ const Single = () => {
         );
         setPost(data);
       } catch (error) {
+        console.error(error);
         setErrorState(error.response.data);
       }
       setOnLoading(false);
     };
     fetchData();
   }, [location]);
-  console.log(post);
+
   return (
     <div className="single">
       {loading === null ? (
