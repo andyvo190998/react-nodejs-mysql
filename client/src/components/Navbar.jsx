@@ -4,10 +4,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 
 const Navbar = () => {
-  const { currentUser, logout } = useContext(AuthContext);
+  const { currentUser, logout, setSelectedCat, selectedCat } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLog = async () => {
+    setSelectedCat(null);
     if (currentUser) {
       await logout();
     } else {
@@ -18,33 +20,103 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="container">
-        <Link to="/" className="logo">
+        <Link onClick={() => setSelectedCat(null)} to="/" className="logo">
           <img src={Logo} alt="logo" />
         </Link>
         <div className="links">
-          <Link to="/?cat=art" className="link">
-            <h6>ART</h6>
+          <Link
+            onClick={() => setSelectedCat('art')}
+            to="/?cat=art"
+            className="link"
+          >
+            <h6
+              style={{
+                borderBottom: selectedCat === 'art' && '1px solid teal',
+                color: selectedCat === 'art' && 'teal',
+              }}
+            >
+              ART
+            </h6>
           </Link>
-          <Link to="/?cat=science" className="link">
-            <h6>SCIENCE</h6>
+          <Link
+            onClick={() => setSelectedCat('science')}
+            to="/?cat=science"
+            className="link"
+          >
+            <h6
+              style={{
+                borderBottom: selectedCat === 'science' && '1px solid teal',
+                color: selectedCat === 'science' && 'teal',
+              }}
+            >
+              SCIENCE
+            </h6>
           </Link>
-          <Link to="/?cat=technology" className="link">
-            <h6>TECHNOLOGY</h6>
+          <Link
+            onClick={() => setSelectedCat('technology')}
+            to="/?cat=technology"
+            className="link"
+          >
+            <h6
+              style={{
+                borderBottom: selectedCat === 'technology' && '1px solid teal',
+                color: selectedCat === 'technology' && 'teal',
+              }}
+            >
+              TECHNOLOGY
+            </h6>
           </Link>
-          <Link to="/?cat=cinema" className="link">
-            <h6>CINEMA</h6>
+          <Link
+            onClick={() => setSelectedCat('cinema')}
+            to="/?cat=cinema"
+            className="link"
+          >
+            <h6
+              style={{
+                borderBottom: selectedCat === 'cinema' && '1px solid teal',
+                color: selectedCat === 'cinema' && 'teal',
+              }}
+            >
+              CINEMA
+            </h6>
           </Link>
-          <Link to="/?cat=design" className="link">
-            <h6>DESIGN</h6>
+          <Link
+            onClick={() => setSelectedCat('design')}
+            to="/?cat=design"
+            className="link"
+          >
+            <h6
+              style={{
+                borderBottom: selectedCat === 'design' && '1px solid teal',
+                color: selectedCat === 'design' && 'teal',
+              }}
+            >
+              DESIGN
+            </h6>
           </Link>
-          <Link to="/?cat=food" className="link">
-            <h6>FOOD</h6>
+          <Link
+            onClick={() => setSelectedCat('food')}
+            to="/?cat=food"
+            className="link"
+          >
+            <h6
+              style={{
+                borderBottom: selectedCat === 'food' && '1px solid teal',
+                color: selectedCat === 'food' && 'teal',
+              }}
+            >
+              FOOD
+            </h6>
           </Link>
           <span>{currentUser && currentUser.username}</span>
           <span onClick={handleLog}>{currentUser ? 'Logout' : 'Login'}</span>
           {currentUser && (
             <span className="write">
-              <Link className="link" to="/write">
+              <Link
+                onClick={() => setSelectedCat(null)}
+                className="link"
+                to="/write"
+              >
                 Write
               </Link>
             </span>

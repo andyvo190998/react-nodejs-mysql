@@ -32,16 +32,19 @@ export const getPost = (req, res) => {
 }
 
 export const deletePost = (req, res) => {
-    const postId = req.params.id
     const token = req.cookies.access_token
-    const query = "DELETE FROM posts WHERE id = ?"
-    if (!token) return res.status(403).json("Token is not valid")
 
-    jwt.verify(token, 'secret-key', (err) => {
+    if (!token) return res.status(401).json("Not authenticated!")
+
+    jwt.verify(token, 'secret-key', (err, user) => {
         if (err) return res.status(403).json("Token is not valid")
 
-        db.query(query, [postId], (err) => {
-            if (err) return res.status(404).json(err)
+        const postId = req.params.id
+        const query = "DELETE FROM posts WHERE `id` = ? AND `user_id` = ?"
+
+        db.query(query, [postId, user.id], (err, data) => {
+            if (err) return res.status(403).json(err)
+            if (data.affectedRows === 0) return res.status(401).json('Unauthorized!')
             return res.status(200).json('Delete Success')
         })
 
@@ -53,17 +56,17 @@ export const updatePost = (req, res) => {
     const postId = req.params.id
     const updateContent = req.body
     const token = req.cookies.access_token
-    const query = 'UPDATE posts SET ? WHERE id = ?'
+    const query = 'UPDATE posts SET ? WHERE `id` = ? AND `user_id` = ?'
 
     if (!token) return res.status(403).json("Token is not valid")
 
-    jwt.verify(token, 'secret-key', (err) => {
+    jwt.verify(token, 'secret-key', (err, user) => {
         if (err) return res.status(404).json(err)
 
-        db.query(query, [updateContent, postId], (err) => {
+        db.query(query, [updateContent, postId, user.id], (err, data) => {
+            if (data.affectedRows === 0) return res.status(401).json('Unauthorized')
             if (err) return res.status(404).json(err)
             return res.status(200).json('Update Success')
         })
     })
-    res.json({ test: "from controller" })
 }

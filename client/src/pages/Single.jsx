@@ -22,9 +22,12 @@ const Single = () => {
 
   const handleDeletePost = async () => {
     try {
-      await axios.delete(`http://localhost:8800/api/posts/${postId}`, {
-        withCredentials: true,
-      });
+      const { data } = await axios.delete(
+        `http://localhost:8800/api/posts/${postId}`,
+        {
+          withCredentials: true,
+        }
+      );
       enqueueSnackbar('Post deleted', {
         variant: 'success',
         anchorOrigin: {
@@ -34,8 +37,7 @@ const Single = () => {
       });
       setDeleted(true);
     } catch (error) {
-      console.log(error.response);
-      enqueueSnackbar('Delete fail, please refresh and do it again!', {
+      enqueueSnackbar(`Delete fail, ${error.response.data}`, {
         variant: 'error',
         anchorOrigin: {
           vertical: 'bottom',
@@ -85,7 +87,7 @@ const Single = () => {
             <div className="content">
               <img
                 style={{ height: post.img === null && '0px' }}
-                src={post.img}
+                src={`../uploads/${post.img}`}
                 alt="img"
               />
               <div className="user">

@@ -14,6 +14,7 @@ const Write = () => {
   const [value, setValue] = useState('');
   const [title, setTitle] = useState('');
   const [cat, setCat] = useState('');
+  const [file, setFile] = useState(null);
 
   const handleSubmitNewPost = async (postContent) => {
     try {
@@ -49,10 +50,11 @@ const Write = () => {
           withCredentials: true,
         }
       )
-      .then((res) => navigate(`/post/${location.search.slice(6)}`))
+      .then(() => {
+        navigate(`/post/${location.search.slice(6)}`);
+      })
       .catch((error) => {
-        console.error(error);
-        enqueueSnackbar('Update fail, please refresh and do it again!', {
+        enqueueSnackbar(`Update fail, ${error.response.data}`, {
           variant: 'error',
           anchorOrigin: {
             vertical: 'bottom',
@@ -62,7 +64,8 @@ const Write = () => {
       });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    console.log(value);
     if (currentUser === null) {
       enqueueSnackbar('Please login before posting!', {
         variant: 'error',
@@ -73,17 +76,33 @@ const Write = () => {
       });
       return;
     }
+    const imgUrl = await uploadImage();
+
     const postContent = {
       title: title,
       description: value.replace(/<\/?p>/g, ''),
       cat: cat,
-      img: null,
+      img: imgUrl,
       user_id: currentUser.id,
     };
     if (location.search === '') {
       handleSubmitNewPost(postContent);
     } else {
       handleUpdatePost(postContent);
+    }
+  };
+
+  const uploadImage = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await axios.post(
+        'http://localhost:8800/api/upload',
+        formData
+      );
+      return res.data;
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -131,7 +150,12 @@ const Write = () => {
           <span>
             <b>Visibility: </b> Public
           </span>
-          <input style={{ display: 'none' }} type="file" id="file" />
+          <input
+            onChange={(e) => setFile(e.target.files[0])}
+            style={{ display: 'none' }}
+            type="file"
+            id="file"
+          />
           <label className="file" htmlFor="file">
             Upload Image
           </label>

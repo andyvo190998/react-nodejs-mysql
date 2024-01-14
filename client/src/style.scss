@@ -162,6 +162,7 @@ body {
             flex-direction: row-reverse;
           }
           .img {
+            height: max-content;
             cursor: pointer;
             flex: 2;
             position: relative;
