@@ -15,7 +15,6 @@ const Write = () => {
   const [title, setTitle] = useState('');
   const [cat, setCat] = useState('');
   const [file, setFile] = useState(null);
-
   const handleSubmitNewPost = async (postContent) => {
     try {
       const { data } = await axios.post(
@@ -65,7 +64,16 @@ const Write = () => {
   };
 
   const handleSubmit = async () => {
-    console.log(value);
+    if (cat === '' || title === '' || value === '') {
+      enqueueSnackbar('Please fill on all fields!', {
+        variant: 'error',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'right',
+        },
+      });
+      return;
+    }
     if (currentUser === null) {
       enqueueSnackbar('Please login before posting!', {
         variant: 'error',
@@ -80,7 +88,8 @@ const Write = () => {
 
     const postContent = {
       title: title,
-      description: value.replace(/<\/?p>/g, ''),
+      // description: value.replace(/<\/?p>/g, ''),
+      description: value,
       cat: cat,
       img: imgUrl,
       user_id: currentUser.id,
@@ -113,6 +122,7 @@ const Write = () => {
         .then((res) => {
           setValue(res.data.description);
           setTitle(res.data.title);
+          setFile({ name: res.data.img });
           setCat(res.data.cat);
         })
         .catch((error) => console.error(error));
@@ -146,19 +156,21 @@ const Write = () => {
           <span>
             <b>Status: </b> Draft
           </span>
-
           <span>
             <b>Visibility: </b> Public
           </span>
-          <input
-            onChange={(e) => setFile(e.target.files[0])}
-            style={{ display: 'none' }}
-            type="file"
-            id="file"
-          />
-          <label className="file" htmlFor="file">
-            Upload Image
-          </label>
+          <div style={{ display: 'flex' }}>
+            <input
+              onChange={(e) => setFile(e.target.files[0])}
+              style={{ display: 'none' }}
+              type="file"
+              id="file"
+            />
+            <label className="file" htmlFor="file">
+              Upload Image
+            </label>
+            <p style={{ color: 'blue' }}>{file !== null && file.name}</p>
+          </div>
           <div className="buttons">
             <button>Save as a draft</button>
             <button onClick={handleSubmit}>

@@ -109,7 +109,7 @@ const Single = () => {
                 )}
               </div>
               <h1>{post.title}</h1>
-              <p>{post.description}</p>
+              <div dangerouslySetInnerHTML={{ __html: post.description }} />
             </div>
           )}
         </>

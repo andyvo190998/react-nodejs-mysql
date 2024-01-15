@@ -1,3 +1,4 @@
+import { Alert, Stack } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -10,6 +11,12 @@ const Home = () => {
 
   const goToPost = (post) => {
     navigate(`/post/${post.id}`);
+  };
+
+  const handleShortenText = (text) => {
+    const shortText = text.length > 200 ? text.slice(0, 200) + '...' : text;
+
+    return shortText;
   };
 
   useEffect(() => {
@@ -46,13 +53,22 @@ const Home = () => {
                   <Link className="link" to={`/post/${post.id}`}>
                     <h1>{post.title}</h1>
                   </Link>
-                  <p>{post.description}</p>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: handleShortenText(post.description),
+                    }}
+                  />
+                  {/* {handleShortenText(post.description)} */}
                   <button onClick={() => goToPost(post)}>Read More</button>
                 </div>
               </div>
             ))
           ) : (
-            <p>Create first post in this category</p>
+            <Stack sx={{ flex: 5, mt: 5 }}>
+              <Alert severity="success">
+                Create first post in this category
+              </Alert>
+            </Stack>
           )}
         </div>
       )}
