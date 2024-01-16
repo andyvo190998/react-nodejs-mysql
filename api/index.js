@@ -5,6 +5,7 @@ import userRoutes from './routes/users.js'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import jwt from 'jsonwebtoken'
 import multer from 'multer'
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {

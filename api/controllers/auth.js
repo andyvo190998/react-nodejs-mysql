@@ -42,7 +42,7 @@ export const login = (req, res) => {
         const token = jwt.sign({ id: data[0].id }, "secret-key")
         //send everything about user except password
         const { password, ...other } = data[0]
-        const expirationTime = 60 * 60 * 1000; // 5 minutes in milliseconds
+        const expirationTime = 10 * 60 * 1000; //1 minutes in milliseconds
         const expiryDate = new Date(Date.now() + expirationTime);
 
         res.cookie("access_token", token, {
